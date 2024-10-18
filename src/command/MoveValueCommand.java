@@ -39,7 +39,7 @@ public class MoveValueCommand implements Command{
         }
 
 
-        Position lastPosition = model.moveAnt(steps);
+        Position lastPosition = model.moveAnt(steps);git
         String output = null;
         if (model.getAntPosition() == null) {
             output = OFF_BOARD_CELL_FORMAT.formatted(lastPosition.row(), lastPosition.column());
