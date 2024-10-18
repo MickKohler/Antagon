@@ -18,6 +18,42 @@ public class Ant {
         this.direction = direction;
     }
 
+
+    /**
+     * Moves the ant to the next cell in the direction the ant is facing
+     * and rotates the ant depending on the color of the cell the ant is now on
+     *
+     * @return the new position of the ant
+     */
+    Position move() {
+        Position preMovePosition = position;
+        board.getCell(preMovePosition).resetAnt();
+
+        Position postMovePosition = new Position(preMovePosition.row() + getDirection().getRowChange()
+                                                    , preMovePosition.column() + getDirection().getColumnChange());
+        Cell postMoveCell = board.getCell(postMovePosition);
+
+        if (postMoveCell == null) {
+            position = null;
+        } else {
+            rotate(postMoveCell.getColor());
+
+            postMoveCell.enrollAntMove(this);
+
+            position = postMovePosition;
+        }
+        return position;
+    }
+
+    private void rotate(Color color) {
+        int rotations = switch (color) {
+            case BLACK -> -1;
+            case WHITE -> 1;
+        };
+        direction = direction.rotate(rotations);
+    }
+
+
     /**
      * Getter for the board
      *

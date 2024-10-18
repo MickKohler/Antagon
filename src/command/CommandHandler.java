@@ -52,7 +52,6 @@ public final class CommandHandler {
      * Starts the interaction with the user.
      */
     public void handleUserInput() {
-        // TODO: add help output here in case of additional help command
         this.running = true;
         System.out.println(INTRODUCTION);
 
@@ -96,8 +95,6 @@ public final class CommandHandler {
     }
 
 
-    // else if (!commands.get(commandName).isAvailable()) {  // TODO: nicht sicher ob das so richtig ist
-    //            System.err.println(ERROR_PREFIX + ERROR_NON_AVAILABLE.formatted(commandName));
     private void executeCommand(String commandName, String[] commandArguments) {
         if (!commands.containsKey(commandName)) {
             System.err.println(ERROR_PREFIX + COMMAND_NOT_FOUND_FORMAT.formatted(commandName));
@@ -108,7 +105,7 @@ public final class CommandHandler {
             String output = switch (result.getType()) {
                 case SUCCESS -> result.getMessage();
                 case FAILURE -> ERROR_PREFIX + result.getMessage();
-                case QUIT -> null; // evtl. ""
+                case QUIT -> null; 
             };
             if (output != null) {
                 switch (result.getType()) {
@@ -126,7 +123,7 @@ public final class CommandHandler {
         helpCommand.setCommands(commands);
         this.addCommand(QUIT_COMMAND_NAME, new QuitCommand(this));
         this.addCommand(FIELD_COMMAND_NAME, new FieldCommand());
-        this.addCommand(MOVE_VALUE_COMMAND_NAME, new MoveValueCommand());
+        this.addCommand(MOVE_VALUE_COMMAND_NAME, new MoveValueCommand(this));
         this.addCommand(POSITION_COMMAND_NAME, new PositionCommand());
         this.addCommand(PRINT_COMMAND_NAME, new PrintCommand());
         this.addCommand(HELP_COMMAND_NAME, helpCommand);

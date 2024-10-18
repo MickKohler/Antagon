@@ -1,6 +1,7 @@
 package command;
 
 import model.Board;
+import model.Position;
 
 
 /**
@@ -18,6 +19,11 @@ public class MoveValueCommand implements Command{
     private static final String NEGATIVE_STEPS = "Steps can not be negative";
     private static final String OFF_BOARD_CELL_FORMAT = "%d, %d";
     private static final int NUMBER_OF_ARGUMENTS = 1;
+    private final CommandHandler commandHandler;
+
+    public MoveValueCommand(CommandHandler commandHandler) {
+        this.commandHandler = commandHandler;
+    }
 
     @Override
     public CommandResult execute(Board model, String[] commandArguments) {
@@ -33,16 +39,14 @@ public class MoveValueCommand implements Command{
         }
 
 
-        for (int i = 0; i < steps; i++) {
-            model.moveAnt();
-
-            if (model.getAntPosition() == null) {
-                return new CommandResult(CommandResultType.QUIT, String.format(OFF_BOARD_CELL_FORMAT, model.getAntPosition().row(), model.getAntPosition().column()));
-            }
+        Position lastPosition = model.moveAnt(steps);
+        String output = null;
+        if (model.getAntPosition() == null) {
+            output = OFF_BOARD_CELL_FORMAT.formatted(lastPosition.row(), lastPosition.column());
+            commandHandler.quit();
         }
 
-
-        return new CommandResult(CommandResultType.SUCCESS, null);
+        return new CommandResult(CommandResultType.SUCCESS, output);
     }
 
     @Override

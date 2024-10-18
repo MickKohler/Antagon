@@ -51,8 +51,11 @@ public class HelpCommand implements Command{
 
         availableCommands.remove(HELP_COMMAND_NAME);
 
-        for (String command : availableCommands) {
-            helpMessage.append(this.commands.get(command).getCommandDescription()).append(System.lineSeparator());
+        for (int i = 0; i < availableCommands.size(); i++) {
+            helpMessage.append(this.commands.get(availableCommands.get(i)).getCommandDescription());
+            if (i != availableCommands.size() - 1) {
+                helpMessage.append(System.lineSeparator());
+            }
         }
 
         return new CommandResult(CommandResultType.SUCCESS, helpMessage.toString());

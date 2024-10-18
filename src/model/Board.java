@@ -72,28 +72,23 @@ public final class Board {
 
     /**
      * Moves the ant according to the rules of the Langton's ant game.
+     * If the ant is out of bounds, the last valid position will be returned.
+     *
+     * @param steps the number of steps is going to take in one move
      */
-    public void moveAnt() {
-        Position startPosition = ant.getPosition();
-        Cell startCell = board.get(startPosition);
-        Position endPisition = new Position(startPosition.row() + ant.getDirection().getRowChange(),
-                startPosition.column() + ant.getDirection().getColumnChange());
+    public Position moveAnt(int steps) {
+        Position lastAntPosition = getAntPosition();
+        for (int i = 0; i < steps; i++) {
+            Position postMovePosition = ant.move();
+            if (postMovePosition == null) {
+                break;
+            }
 
-        Cell endCell = board.get(endPisition);
-
-        startCell.resetAnt();
-        ant.setPosition(endPisition);
-        endCell.setAnt(ant);
-
-        if (endCell.getColor() == Color.WHITE) {
-            ant.setDirection(ant.getDirection().rotate(1)); // 1 rotation 90 degrees clockwise
-            endCell.setColor(Color.BLACK);
-        } else if (endCell.getColor() == Color.BLACK) {
-            ant.setDirection(ant.getDirection().rotate(3)); // 3 rotations 90 degrees clockwise -> 1 rotation 90 degrees counter-clockwise
-            endCell.setColor(Color.WHITE);
+            lastAntPosition = postMovePosition;
         }
-
+        return lastAntPosition;
     }
+
 
     /**
      * Returns the cell on the given position.

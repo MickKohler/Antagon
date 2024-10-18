@@ -70,6 +70,17 @@ public class Cell {
         return (ant == null) ? color.getRepresentation() : ant.getDirection().getRepresentation(color);
     }
 
+    /**
+     * Called to register that an ant moved onto this cell. Modifies the state of the cell.
+     * The color of the cell is changed to the next color in the sequence.
+     *
+     * @param movingAnt the ant that moved onto this cell
+     */
+    void enrollAntMove(Ant movingAnt) {
+        this.ant = movingAnt;
+        color = Color.values()[(color.ordinal() + 1) % Color.values().length];
+    }
+
 }
 
 
