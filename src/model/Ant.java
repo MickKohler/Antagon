@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * This class represents an ant on a board
+ *
+ * @author Mick Kohler
+ */
 public class Ant {
     private final Board board;
     private Position position;
